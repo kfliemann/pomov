@@ -1,13 +1,17 @@
-import appGui as Gui
-import appTimer as Timer
-import appConfig as Config
+import sys
+import gui.appGui as Gui
+import config.appConfig as Config
+from PyQt6.QtWidgets import QApplication
+
 
 class App:
 
     def __init__(self) -> None:
-        config = Config.AppConfig()
-        Gui.start_gui()
-        Timer.start_timer()
+        self.config = Config.AppConfig()
+        print(self.config.readSettings)
+        self.gui = Gui.AppGui()  
 
 if __name__ == "__main__":
+    window = QApplication(sys.argv)
     app = App()
+    sys.exit(window.exec())

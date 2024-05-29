@@ -12,7 +12,8 @@ class AppConfig:
         "volume"
     ]
     readSettings = {}
-    settingsPath = "./pomov/settings.ini"
+    settingsPath = "./pomov/config/settings.ini"
+    
 
     def __init__(self) -> None:
         self.checkSettingsIntegrity()
@@ -70,11 +71,8 @@ class AppConfig:
             'volume': 50,
         }
 
-        with open('./pomov/settings.ini', 'w') as configfile:
+        with open(self.settingsPath, 'w') as configfile:
             configParser.write(configfile)
         
-        self.checkSettingsIntegrity()
+        #self.checkSettingsIntegrity()
         return
-
-if __name__ == "__main__":
-    app = AppConfig()
