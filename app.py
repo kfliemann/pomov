@@ -8,8 +8,8 @@ class App:
 
     def __init__(self) -> None:
         self.config = Config.AppConfig()
-        print(self.config.readSettings)
-        self.gui = Gui.AppGui()  
+        self.gui = Gui.AppGui(self.config)
+
 
 if __name__ == "__main__":
     window = QApplication(sys.argv)

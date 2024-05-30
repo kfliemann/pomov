@@ -45,7 +45,7 @@ class AppConfig:
 
         #save read in settings in dictionary
         for j in configParser["Settings"]:
-            self.readSettings[j] = configParser["Settings"][j]
+            self.readSettings[j] = self.str_to_bool(configParser["Settings"][j])
         return
 
     def createSettingsFile(self):
@@ -56,17 +56,17 @@ class AppConfig:
             '#messing with this file might result in losing your customized settings to fallback standard settings.\n'
             '#only changes numeric values and boolean values, but keep the structure intact\n'
             '\n#time unit is in minutes\n'
-            'timer': '60',
+            'timer': 60,
             '\n#time unit in minutes, how long you want to move yourself\n'
-            'pauseTimer': 5,
+            'pausetimer': 5,
             '\n#defines if the timer should automatically start after the pause timer ran out or user input is needed\n'
-            'autoRestart': True,
+            'autorestart': True,
             '\n#if this is true, the program will open as autostart\n'
-            'openOnBoot': True,
+            'openonboot': True,
             '\n#if this is true, the timer will start instantly on after booting pc\n'
-            'startOnBoot': True,
+            'startonboot': True,
             '\n#defines if the program should close to taskbar if pressed on x or be closed\n'
-            'toTaskbar': True,
+            'totaskbar': True,
             '\n#defines the volume of the sound\n'
             'volume': 50,
         }
@@ -74,5 +74,39 @@ class AppConfig:
         with open(self.settingsPath, 'w') as configfile:
             configParser.write(configfile)
         
-        #self.checkSettingsIntegrity()
+        self.checkSettingsIntegrity()
         return
+   
+    def saveSettingsFile(self):
+        configParser = configparser.ConfigParser()
+        configParser['Settings'] = {
+            '#attention!\n'
+            '#the program rewrites the settings if any errors were found\n'
+            '#messing with this file might result in losing your customized settings to fallback standard settings.\n'
+            '#only changes numeric values and boolean values, but keep the structure intact\n'
+            '\n#time unit is in minutes\n'
+            'timer': self.readSettings["timer"],
+            '\n#time unit in minutes, how long you want to move yourself\n'
+            'pausetimer': self.readSettings["pausetimer"],
+            '\n#defines if the timer should automatically start after the pause timer ran out or user input is needed\n'
+            'autorestart': self.readSettings["autorestart"],
+            '\n#if this is true, the program will open as autostart\n'
+            'openonboot': self.readSettings["openonboot"],
+            '\n#if this is true, the timer will start instantly on after booting pc\n'
+            'startonboot': self.readSettings["startonboot"],
+            '\n#defines if the program should close to taskbar if pressed on x or be closed\n'
+            'totaskbar': self.readSettings["totaskbar"],
+            '\n#defines the volume of the sound\n'
+            'volume': self.readSettings["volume"],
+        }
+
+        with open(self.settingsPath, 'w') as configfile:
+            configParser.write(configfile)
+
+    def str_to_bool(self, s):
+        if s == "True":
+            return True
+        elif s == "False":
+            return False
+        else:
+            return s
