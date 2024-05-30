@@ -5,9 +5,10 @@ from qfluentwidgets import *
 class SettingsGui():
     settingsWidget = None
 
-    def __init__(self, parent, appConfig_obj):
+    def __init__(self, parent, appConfig_obj, titlebarGui_obj):
         self.parent = parent
         self.appConfig_obj_copy = appConfig_obj
+        self.titlebarGui_obj_copy = titlebarGui_obj 
 
         self.settingsWidget = QWidget()
         self.settingsWidget_layout = QVBoxLayout(self.settingsWidget)
@@ -150,4 +151,4 @@ class SettingsGui():
 
     def saveSettings(self):
         self.appConfig_obj_copy.saveSettingsFile()
-        self.parent.setCurrentStack(1)
+        self.titlebarGui_obj_copy.settings_button_clicked(self.parent)
