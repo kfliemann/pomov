@@ -1,5 +1,7 @@
+import re
 from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QVBoxLayout, QHBoxLayout, QWidget
+from PyQt6.QtGui import QValidator
 from qfluentwidgets import *
 
 class SettingsGui():
@@ -32,13 +34,16 @@ class SettingsGui():
         timer_label = BodyLabel("Timer")
         
         #lineedit
-        timer_lineEdit = LineEdit()
-        timer_lineEdit.setPlaceholderText("Minutes")
-        timer_lineEdit.setText(self.appConfig_obj_copy.readSettings["timer"])
-        timer_lineEdit.textEdited.connect(lambda: self.changeSettingsValue("timer", timer_lineEdit.text()))
+        self.timer_lineEdit = LineEdit()
+        self.timer_lineEdit.setPlaceholderText("Minutes")
+        self.timer_lineEdit.setText(str(self.appConfig_obj_copy.readSettings["timer"]))
+        self.timer_lineEdit.textEdited.connect(lambda: self.changeSettingsValue("timer", self.timer_lineEdit.text()))
+
+        #input validator
+        self.timer_lineEdit.setValidator(ValidateTimer())
 
         timerRowWidget_layout.addWidget(timer_label)
-        timerRowWidget_layout.addWidget(timer_lineEdit)
+        timerRowWidget_layout.addWidget(self.timer_lineEdit)
         return timerRowWidget
     
     def init_pauseTimer(self):
@@ -50,13 +55,16 @@ class SettingsGui():
         pauseTimer_label = BodyLabel("Pause")
         
         #lineedit
-        pauseTimer_lineEdit = LineEdit()
-        pauseTimer_lineEdit.setPlaceholderText("Minutes")
-        pauseTimer_lineEdit.setText(self.appConfig_obj_copy.readSettings["pausetimer"])
-        pauseTimer_lineEdit.textEdited.connect(lambda: self.changeSettingsValue("pausetimer", pauseTimer_lineEdit.text()))
+        self.pauseTimer_lineEdit = LineEdit()
+        self.pauseTimer_lineEdit.setPlaceholderText("Minutes")
+        self.pauseTimer_lineEdit.setText(str(self.appConfig_obj_copy.readSettings["pausetimer"]))
+        self.pauseTimer_lineEdit.textEdited.connect(lambda: self.changeSettingsValue("pausetimer", self.pauseTimer_lineEdit.text()))
+
+        #input validator
+        self.pauseTimer_lineEdit.setValidator(ValidatePauseTimer())
 
         pauseTimerRowWidget_layout.addWidget(pauseTimer_label)
-        pauseTimerRowWidget_layout.addWidget(pauseTimer_lineEdit)
+        pauseTimerRowWidget_layout.addWidget(self.pauseTimer_lineEdit)
         return pauseTimerRowWidget
     
     def init_autorestart(self):
@@ -139,6 +147,7 @@ class SettingsGui():
         self.appConfig_obj_copy.readSettings["volume"] = currentVol
         
     def playToggleButton_clicked(self):
+        print(self.appConfig_obj_copy.readSettings)
         if self.playButton_toggled == False:
             self.playToggleButton.setIcon(FluentIcon.PAUSE)
             self.playButton_toggled = True
@@ -147,8 +156,53 @@ class SettingsGui():
             self.playButton_toggled = False
 
     def changeSettingsValue(self, settingName, value):
-        self.appConfig_obj_copy.readSettings[settingName] = value
+        if value != "":
+            self.appConfig_obj_copy.readSettings[settingName] = value
+            match settingName:
+                case "timer":
+                    self.appConfig_obj_copy.readSettings["timer_sec"] = int(value) * 60
+                case "pausetimer":
+                    self.appConfig_obj_copy.readSettings["pausetimer_sec"] = int(value) * 60                        
+        else:
+            match settingName:
+                case "timer":
+                    self.appConfig_obj_copy.readSettings[settingName] = 60
+                    self.appConfig_obj_copy.readSettings["timer_sec"] = 60 * 60
+                case "pausetimer":
+                    self.appConfig_obj_copy.readSettings[settingName] = 5
+                    self.appConfig_obj_copy.readSettings["pausetimer_sec"] = 5 * 60      
 
     def saveSettings(self):
+        if self.timer_lineEdit.text() == "":
+            self.timer_lineEdit.setText(str(self.appConfig_obj_copy.readSettings["timer"]))
+
+        if self.pauseTimer_lineEdit.text() == "":
+            self.pauseTimer_lineEdit.setText(str(self.appConfig_obj_copy.readSettings["pausetimer"]))  
+
         self.appConfig_obj_copy.saveSettingsFile()
         self.titlebarGui_obj_copy.settings_button_clicked(self.parent)
+
+
+class ValidateTimer(QValidator):
+    def validate(self, str , index):
+        pattern = re.compile("^(?:[1-9]?[0-9]|1[01][0-9]|120)$")
+        
+        if str == "":
+            return QValidator.State.Acceptable, str, index
+        
+        if pattern.fullmatch(str):
+            return QValidator.State.Acceptable, str, index
+        else:
+            return QValidator.State.Invalid, str, index
+
+class ValidatePauseTimer(QValidator):
+    def validate(self, str , index):
+        pattern = re.compile("^(?:[0-5]?[0-9]|60)$")
+        
+        if str == "":
+            return QValidator.State.Acceptable, str, index
+        
+        if pattern.fullmatch(str):
+            return QValidator.State.Acceptable, str, index
+        else:
+            return QValidator.State.Invalid, str, index

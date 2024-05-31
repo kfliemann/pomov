@@ -17,6 +17,8 @@ class AppConfig:
 
     def __init__(self) -> None:
         self.checkSettingsIntegrity()
+        self.transform_timer()
+        
 
     def checkSettingsIntegrity(self):
         configParser = configparser.ConfigParser()
@@ -102,6 +104,12 @@ class AppConfig:
 
         with open(self.settingsPath, 'w') as configfile:
             configParser.write(configfile)
+
+    def transform_timer(self):
+        self.readSettings["timer"] = int(self.readSettings["timer"])
+        self.readSettings["pausetimer"] = int(self.readSettings["pausetimer"]) 
+        self.readSettings["timer_sec"] = self.readSettings["timer"] * 60
+        self.readSettings["pausetimer_sec"] = self.readSettings["pausetimer"] * 60
 
     def str_to_bool(self, s):
         if s == "True":
