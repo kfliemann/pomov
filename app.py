@@ -6,7 +6,7 @@ from PyQt6.QtWidgets import QApplication
 
 class App:
 
-    def __init__(self) -> None:
+    def __init__(self):
         self.config = Config.AppConfig()
         self.gui = Gui.AppGui(self.config)
 

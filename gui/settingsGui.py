@@ -53,7 +53,7 @@ class SettingsGui():
         pauseTimer_lineEdit = LineEdit()
         pauseTimer_lineEdit.setPlaceholderText("Minutes")
         pauseTimer_lineEdit.setText(self.appConfig_obj_copy.readSettings["pausetimer"])
-        pauseTimer_lineEdit.textEdited.connect(lambda: self.changeSettingsValue("timer", pauseTimer_lineEdit.text()))
+        pauseTimer_lineEdit.textEdited.connect(lambda: self.changeSettingsValue("pausetimer", pauseTimer_lineEdit.text()))
 
         pauseTimerRowWidget_layout.addWidget(pauseTimer_label)
         pauseTimerRowWidget_layout.addWidget(pauseTimer_lineEdit)
