@@ -1,14 +1,18 @@
-import re
+from utils.validator import ValidateTimer, ValidatePauseTimer
 from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QVBoxLayout, QHBoxLayout, QWidget
-from PyQt6.QtGui import QValidator
 from qfluentwidgets import *
 
 class SettingsGui():
+
+    appGui_obj_copy = None
+    appConfig_obj_copy = None
+    titlebarGui_obj_copy = None
     settingsWidget = None
 
-    def __init__(self, parent, appConfig_obj, titlebarGui_obj):
-        self.parent = parent
+
+    def __init__(self, appGui_obj, appConfig_obj, titlebarGui_obj):
+        self.appGui_obj_copy = appGui_obj
         self.appConfig_obj_copy = appConfig_obj
         self.titlebarGui_obj_copy = titlebarGui_obj 
 
@@ -125,7 +129,7 @@ class SettingsGui():
         }
         '''
         setCustomStyleSheet(self.playToggleButton, qss, qss)
-        self.playToggleButton.clicked.connect(lambda: self.playToggleButton_clicked())
+        self.playToggleButton.clicked.connect(self.playToggleButton_clicked)
         
         volumeRowWidget_layout.addWidget(volumeSlider)
         volumeRowWidget_layout.addWidget(self.timer_label)
@@ -135,19 +139,14 @@ class SettingsGui():
     def init_saveSettings(self):
         #button
         saveSettingsButton = PushButton(FluentIcon.SAVE, 'Save Settings')
-        saveSettingsButton.clicked.connect(lambda: self.saveSettings())
+        saveSettingsButton.clicked.connect(self.saveSettings)
         return saveSettingsButton
-    
-
-
-    #helper function section
     
     def volume_changed(self, currentVol):
         self.timer_label.setText(str(currentVol))
         self.appConfig_obj_copy.readSettings["volume"] = currentVol
         
     def playToggleButton_clicked(self):
-        print(self.appConfig_obj_copy.readSettings)
         if self.playButton_toggled == False:
             self.playToggleButton.setIcon(FluentIcon.PAUSE)
             self.playButton_toggled = True
@@ -156,21 +155,19 @@ class SettingsGui():
             self.playButton_toggled = False
 
     def changeSettingsValue(self, settingName, value):
-        if value != "":
-            self.appConfig_obj_copy.readSettings[settingName] = value
-            match settingName:
-                case "timer":
-                    self.appConfig_obj_copy.readSettings["timer_sec"] = int(value) * 60
-                case "pausetimer":
-                    self.appConfig_obj_copy.readSettings["pausetimer_sec"] = int(value) * 60                        
-        else:
-            match settingName:
-                case "timer":
+        match settingName:
+            case "timer":
+                if value != "":
+                    self.appConfig_obj_copy.readSettings[settingName] = int(value) 
+                else:
                     self.appConfig_obj_copy.readSettings[settingName] = 60
-                    self.appConfig_obj_copy.readSettings["timer_sec"] = 60 * 60
-                case "pausetimer":
-                    self.appConfig_obj_copy.readSettings[settingName] = 5
-                    self.appConfig_obj_copy.readSettings["pausetimer_sec"] = 5 * 60      
+            case "pausetimer":
+                if value != "":
+                    self.appConfig_obj_copy.readSettings[settingName] = int(value) 
+                else:
+                    self.appConfig_obj_copy.readSettings[settingName] = 5        
+            case _:
+                self.appConfig_obj_copy.readSettings[settingName] = value   
 
     def saveSettings(self):
         if self.timer_lineEdit.text() == "":
@@ -180,29 +177,6 @@ class SettingsGui():
             self.pauseTimer_lineEdit.setText(str(self.appConfig_obj_copy.readSettings["pausetimer"]))  
 
         self.appConfig_obj_copy.saveSettingsFile()
-        self.titlebarGui_obj_copy.settings_button_clicked(self.parent)
-
-
-class ValidateTimer(QValidator):
-    def validate(self, str , index):
-        pattern = re.compile("^(?:[1-9]?[0-9]|1[01][0-9]|120)$")
-        
-        if str == "":
-            return QValidator.State.Acceptable, str, index
-        
-        if pattern.fullmatch(str):
-            return QValidator.State.Acceptable, str, index
-        else:
-            return QValidator.State.Invalid, str, index
-
-class ValidatePauseTimer(QValidator):
-    def validate(self, str , index):
-        pattern = re.compile("^(?:[0-5]?[0-9]|60)$")
-        
-        if str == "":
-            return QValidator.State.Acceptable, str, index
-        
-        if pattern.fullmatch(str):
-            return QValidator.State.Acceptable, str, index
-        else:
-            return QValidator.State.Invalid, str, index
+        self.appGui_obj_copy.timerGui_obj.timer_obj.timer_stop()
+        self.appGui_obj_copy.timerGui_obj.reset_ui()
+        self.titlebarGui_obj_copy.settings_button_clicked(self.appGui_obj_copy)

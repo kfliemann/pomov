@@ -7,8 +7,14 @@ from PyQt6.QtWidgets import QStackedLayout, QWidget, QPushButton, QHBoxLayout
 
 class AppGui(FramelessMainWindow):
 
+    titlebarGui_obj = None
+    timerGui_obj = None
+    settingsGui_obj = None        
+
     def __init__(self, appConfig_obj, parent=None):
         super().__init__(parent=parent)
+        
+        #titlebar
         self.titlebarGui_obj = TitlebarGui()
         self.titlebarGui_obj.init_settings_button(self)
 
@@ -18,7 +24,7 @@ class AppGui(FramelessMainWindow):
         self.main_layout = QStackedLayout(main_widget)
 
         #child widgets
-        self.timerGui_obj = TimerGui(self, appConfig_obj)
+        self.timerGui_obj = TimerGui(appConfig_obj)
         self.settingsGui_obj = SettingsGui(self, appConfig_obj, self.titlebarGui_obj)
 
         self.main_layout.addWidget(self.timerGui_obj.timerWidget)
@@ -30,4 +36,8 @@ class AppGui(FramelessMainWindow):
 
     def setCurrentStack(self, layer):
         self.main_layout.setCurrentIndex(layer)
+
+    def closeEvent(self, event):
+        self.timerGui_obj.timer_obj.timer_exit()
+        event.accept()
 

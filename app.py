@@ -6,6 +6,10 @@ from PyQt6.QtWidgets import QApplication
 
 class App:
 
+    config = None
+    gui = None
+
+
     def __init__(self):
         self.config = Config.AppConfig()
         self.gui = Gui.AppGui(self.config)
