@@ -18,7 +18,7 @@ class AppConfig:
     readSettings = {}
     absolutePath = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     settingsPath = "./pomov/config/settings.ini"
-    gifPath = "./pomov/img/gif/"
+    gifPath = "./pomov/media/img/movement_gif/"
 
     def __init__(self) -> None:
         self.checkSettingsIntegrity()
@@ -115,7 +115,7 @@ class AppConfig:
     
     def get_random_gif_path(self): 
         gif_list = [f for f in listdir(self.gifPath) if isfile(join(self.gifPath, f))]
-        return os.path.join(self.absolutePath , "img", "gif" , gif_list[random.randint(0,len(gif_list)-1)])
+        return os.path.join(self.absolutePath, "media", "img", "movement_gif", gif_list[random.randint(0,len(gif_list)-1)])
 
     def str_to_bool(self, s):
         if s == "True":

@@ -11,4 +11,4 @@ class IconOverwrite(FluentIconBase, Enum):
 
     def path(self, theme=Theme.AUTO):
         # getIconColor() return "white" or "black" according to current theme
-        return f'./pomov/img/icon/{self.value}_{getIconColor(theme)}.svg'
+        return f'./pomov/media/img/icon/{self.value}_{getIconColor(theme)}.svg'
