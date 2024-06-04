@@ -1,4 +1,4 @@
-from img.iconOverwrite import IconOverwrite
+from utils.iconOverwrite import IconOverwrite
 from utils.timer import Timer
 from PyQt6.QtWidgets import QVBoxLayout, QWidget
 from qfluentwidgets import *

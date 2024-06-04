@@ -84,7 +84,6 @@ class Timer():
             self._timer_thread.join()
         self.timer_reset()
 
-
     def timer_reset(self):
         self.initial_timer = self.current_timer = self.appConfig_obj_copy.readSettings["timer"] 
         self.initial_pausetimer = self.current_pausetimer = self.appConfig_obj_copy.readSettings["pausetimer"] 
