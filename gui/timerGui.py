@@ -3,6 +3,7 @@ from utils.timer import Timer
 from PyQt6.QtWidgets import QVBoxLayout, QWidget
 from qfluentwidgets import *
 
+
 class TimerGui():
 
     appConfig_obj_copy = None

@@ -1,6 +1,7 @@
 import re
 from PyQt6.QtGui import QValidator
 
+
 class ValidateTimer(QValidator):
     def validate(self, str , index):
         pattern = re.compile("^(?:[1-9]?[0-9]|1[01][0-9]|120)$")

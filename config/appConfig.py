@@ -1,5 +1,6 @@
 import configparser
 
+
 class AppConfig:
     #need to match settings.ini / createSettingsFile method
     basicSettings = [

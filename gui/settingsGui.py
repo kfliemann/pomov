@@ -3,6 +3,7 @@ from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QVBoxLayout, QHBoxLayout, QWidget
 from qfluentwidgets import *
 
+
 class SettingsGui():
 
     appGui_obj_copy = None
