@@ -29,13 +29,15 @@ class TimerGui():
 
     def init_timerRing(self):
         #progressring
+        #TODO: add * 60 to transformed_timer when done testing.
+        transformed_timer = self.appConfig_obj_copy.readSettings["timer"]
         self.timerRing = ProgressRing()
-        self.timerRing.setRange(0, self.appConfig_obj_copy.readSettings["timer"])
-        self.timerRing.setValue(self.appConfig_obj_copy.readSettings["timer"])
+        self.timerRing.setRange(0, transformed_timer)
+        self.timerRing.setValue(transformed_timer)
         self.timerRing.setTextVisible(True)
         self.timerRing.setFixedSize(120, 120)
         self.timerRing.setStrokeWidth(5)
-        minutes, seconds = divmod(self.appConfig_obj_copy.readSettings["timer"],60)
+        minutes, seconds = divmod(transformed_timer,60)
         time_text = f"{minutes:02}:{seconds:02}\nminutes left"
         self.timerRing.setFormat(time_text)
         return self.timerRing

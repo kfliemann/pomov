@@ -19,8 +19,7 @@ class Timer():
         self.timerGui_obj_copy = timerGui
         self.notification_obj = Notification(self.appConfig_obj_copy)
 
-        self.initial_timer = self.current_timer = self.appConfig_obj_copy.readSettings["timer"] 
-        self.initial_pausetimer = self.current_pausetimer = self.appConfig_obj_copy.readSettings["pausetimer"] 
+        self.timer_reset()
 
         self._timer_thread = None
         self._pause_event = threading.Event()
@@ -94,6 +93,7 @@ class Timer():
         self.timer_reset()
 
     def timer_reset(self):
+        #TODO: add * 60 to each line when done testing.
         self.initial_timer = self.current_timer = self.appConfig_obj_copy.readSettings["timer"] 
         self.initial_pausetimer = self.current_pausetimer = self.appConfig_obj_copy.readSettings["pausetimer"] 
 
