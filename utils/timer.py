@@ -50,9 +50,10 @@ class Timer():
                         self.timerGui_obj_copy.update_timerring_label("timer", self.current_timer)
 
                     #time over
-                    self.current_timer = self.initial_timer
-                    self.notification_obj.show_notification()
-                    timer_type= "pause"
+                    if not self._stop_event.is_set():
+                        self.current_timer = self.initial_timer
+                        self.notification_obj.show_notification()
+                        timer_type= "pause"
                 
                     
                 case "pause":    
