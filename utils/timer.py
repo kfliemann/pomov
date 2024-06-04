@@ -1,8 +1,13 @@
 import time
 import threading
+from utils.notification import Notification
 
 
 class Timer():
+
+    appConfig_obj_copy = None
+    timerGui_obj_copy = None
+    notification_obj = None
 
     initial_timer = None
     initial_pausetimer = None
@@ -12,6 +17,7 @@ class Timer():
     def __init__(self, timerGui, appConfig_obj):
         self.appConfig_obj_copy = appConfig_obj
         self.timerGui_obj_copy = timerGui
+        self.notification_obj = Notification(self.appConfig_obj_copy)
 
         self.initial_timer = self.current_timer = self.appConfig_obj_copy.readSettings["timer"] 
         self.initial_pausetimer = self.current_pausetimer = self.appConfig_obj_copy.readSettings["pausetimer"] 
@@ -45,6 +51,7 @@ class Timer():
 
                     #time over
                     self.current_timer = self.initial_timer
+                    self.notification_obj.show_notification()
                     timer_type= "pause"
                 
                     

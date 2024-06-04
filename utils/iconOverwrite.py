@@ -1,5 +1,4 @@
 from enum import Enum
-import os, sys
 from qfluentwidgets import getIconColor, Theme, FluentIconBase
 
 

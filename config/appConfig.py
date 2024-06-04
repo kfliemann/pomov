@@ -1,5 +1,8 @@
 import configparser
-
+import random
+import os
+from os import listdir
+from os.path import isfile, join
 
 class AppConfig:
     #need to match settings.ini / createSettingsFile method
@@ -13,8 +16,9 @@ class AppConfig:
         "volume"
     ]
     readSettings = {}
+    absolutePath = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     settingsPath = "./pomov/config/settings.ini"
-    
+    gifPath = "./pomov/img/gif/"
 
     def __init__(self) -> None:
         self.checkSettingsIntegrity()
@@ -108,6 +112,10 @@ class AppConfig:
     def transform_timer(self):
         self.readSettings["timer"] = int(self.readSettings["timer"])
         self.readSettings["pausetimer"] = int(self.readSettings["pausetimer"]) 
+    
+    def get_random_gif_path(self): 
+        gif_list = [f for f in listdir(self.gifPath) if isfile(join(self.gifPath, f))]
+        return os.path.join(self.absolutePath , "img", "gif" , gif_list[random.randint(0,len(gif_list)-1)])
 
     def str_to_bool(self, s):
         if s == "True":
