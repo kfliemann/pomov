@@ -13,12 +13,15 @@ class AppConfig:
         "openonboot",
         "startonboot",
         "totaskbar",
+        "alarmfile",
         "volume"
     ]
     readSettings = {}
     absolutePath = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     settingsPath = "./pomov/config/settings.ini"
     gifPath = "./pomov/media/img/movement_gif/"
+    audioPath = "./pomov/media/audio/"
+
 
     def __init__(self) -> None:
         self.checkSettingsIntegrity()
@@ -73,6 +76,8 @@ class AppConfig:
             'startonboot': True,
             '\n#defines if the program should close to taskbar if pressed on x or be closed\n'
             'totaskbar': True,
+            '\n#defines which audio file gets played on notification, default path is /pomov/media/audio/\n'
+            'alarmfile': 'alarm1.wav',
             '\n#defines the volume of the sound\n'
             'volume': 50,
         }
@@ -102,6 +107,8 @@ class AppConfig:
             'startonboot': self.readSettings["startonboot"],
             '\n#defines if the program should close to taskbar if pressed on x or be closed\n'
             'totaskbar': self.readSettings["totaskbar"],
+            '\n#defines which audio file gets played on notification, default path is /pomov/media/audio/\n'
+            'alarmfile': self.readSettings["alarmfile"],
             '\n#defines the volume of the sound\n'
             'volume': self.readSettings["volume"],
         }
@@ -116,6 +123,10 @@ class AppConfig:
     def get_random_gif_path(self): 
         gif_list = [f for f in listdir(self.gifPath) if isfile(join(self.gifPath, f))]
         return os.path.join(self.absolutePath, "media", "img", "movement_gif", gif_list[random.randint(0,len(gif_list)-1)])
+
+    def get_alarm_paths(self):
+        audio_list = [f for f in listdir(self.audioPath) if isfile(join(self.audioPath, f))]
+        return audio_list
 
     def str_to_bool(self, s):
         if s == "True":

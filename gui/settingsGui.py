@@ -1,4 +1,5 @@
 from utils.validator import ValidateTimer, ValidatePauseTimer
+from utils.audioplayer import Audioplayer
 from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import QVBoxLayout, QHBoxLayout, QWidget
 from qfluentwidgets import *
@@ -9,6 +10,7 @@ class SettingsGui():
     appGui_obj_copy = None
     appConfig_obj_copy = None
     titlebarGui_obj_copy = None
+    audioplayer_obj = None
     settingsWidget = None
 
 
@@ -16,6 +18,7 @@ class SettingsGui():
         self.appGui_obj_copy = appGui_obj
         self.appConfig_obj_copy = appConfig_obj
         self.titlebarGui_obj_copy = titlebarGui_obj 
+        self.audioplayer_obj = Audioplayer(self.appConfig_obj_copy)
 
         self.settingsWidget = QWidget()
         self.settingsWidget_layout = QVBoxLayout(self.settingsWidget)
@@ -27,6 +30,7 @@ class SettingsGui():
         self.settingsWidget_layout.addWidget(self.init_openonboot())
         self.settingsWidget_layout.addWidget(self.init_startonboot())
         self.settingsWidget_layout.addWidget(self.init_totaskbar())
+        self.settingsWidget_layout.addWidget(self.init_audiopicker())
         self.settingsWidget_layout.addWidget(self.init_volume())
         self.settingsWidget_layout.addWidget(self.init_saveSettings())
     
@@ -100,6 +104,28 @@ class SettingsGui():
         totaskbarCheckbox.stateChanged.connect(lambda: self.changeSettingsValue("totaskbar", totaskbarCheckbox.isChecked()))
         return totaskbarCheckbox
     
+    def init_audiopicker(self):
+        #audio picker widget
+        audiopickerRowWidget = QWidget()
+        audiopickerRowWidget_layout = QHBoxLayout(audiopickerRowWidget)
+        
+        #audio combobox
+        audiopickerCombobox = ComboBox()
+        audiofiles_list = self.appConfig_obj_copy.get_alarm_paths()
+        preselected_file = self.appConfig_obj_copy.readSettings["alarmfile"]
+        audiopickerCombobox.addItems(self.appConfig_obj_copy.get_alarm_paths())
+        audiopickerCombobox.setCurrentIndex(audiofiles_list.index(preselected_file))
+        audiopickerCombobox.currentIndexChanged.connect(lambda: self.changeSettingsValue("alarmfile", audiopickerCombobox.currentText()))
+
+        #load new audio
+        loadNewAudioButton = PushButton(FluentIcon.FOLDER, 'Add new Sound')
+        loadNewAudioButton.clicked.connect(self.loadNewAudio)
+
+        audiopickerRowWidget_layout.addWidget(audiopickerCombobox)
+        audiopickerRowWidget_layout.addWidget(loadNewAudioButton)
+
+        return audiopickerRowWidget
+
     def init_volume(self):
         #widget
         volumeRowWidget = QWidget()
@@ -151,6 +177,16 @@ class SettingsGui():
         if self.playButton_toggled == False:
             self.playToggleButton.setIcon(FluentIcon.PAUSE)
             self.playButton_toggled = True
+            self.audioplayer_obj.audioplayer_start()
+        else:
+            self.playToggleButton.setIcon(FluentIcon.PLAY)
+            self.playButton_toggled = False
+            self.audioplayer_obj.audioplayer_stop()
+
+    def playToggleButton_toggle(self):
+        if self.playButton_toggled == False:
+            self.playToggleButton.setIcon(FluentIcon.PAUSE)
+            self.playButton_toggled = True
         else:
             self.playToggleButton.setIcon(FluentIcon.PLAY)
             self.playButton_toggled = False
@@ -166,9 +202,22 @@ class SettingsGui():
                 if value != "":
                     self.appConfig_obj_copy.readSettings[settingName] = int(value) 
                 else:
-                    self.appConfig_obj_copy.readSettings[settingName] = 5        
+                    self.appConfig_obj_copy.readSettings[settingName] = 5
+            case "alarmfile":
+                self.appConfig_obj_copy.readSettings[settingName] = value   
+                if self.audioplayer_obj.currently_playing:
+                    self.audioplayer_obj.audioplayer_stop()
+                    self.audioplayer_obj.audioplayer_load_sound()  
+                    self.audioplayer_obj.audioplayer_start()           
+                else:              
+                    self.audioplayer_obj.audioplayer_stop()
+                    self.audioplayer_obj.audioplayer_load_sound()    
+                    self.playToggleButton_toggle()       
             case _:
                 self.appConfig_obj_copy.readSettings[settingName] = value   
+
+    def loadNewAudio(self):
+        print("loading new audio")
 
     def saveSettings(self):
         if self.timer_lineEdit.text() == "":
@@ -180,4 +229,8 @@ class SettingsGui():
         self.appConfig_obj_copy.saveSettingsFile()
         self.appGui_obj_copy.timerGui_obj.timer_obj.timer_stop()
         self.appGui_obj_copy.timerGui_obj.reset_ui()
-        self.titlebarGui_obj_copy.settings_button_clicked(self.appGui_obj_copy)
+        self.titlebarGui_obj_copy.settings_button_clicked()
+
+    def closeSettings(self):
+        self.audioplayer_obj.audioplayer_stop()
+        self.playToggleButton_toggle()

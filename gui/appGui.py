@@ -9,7 +9,8 @@ class AppGui(FramelessMainWindow):
 
     titlebarGui_obj = None
     timerGui_obj = None
-    settingsGui_obj = None        
+    settingsGui_obj = None     
+
 
     def __init__(self, appConfig_obj, parent=None):
         super().__init__(parent=parent)
@@ -39,5 +40,6 @@ class AppGui(FramelessMainWindow):
 
     def closeEvent(self, event):
         self.timerGui_obj.timer_obj.timer_exit()
+        self.settingsGui_obj.audioplayer_obj.audioplayer_exit()
         event.accept()
 
