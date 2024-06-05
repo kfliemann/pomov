@@ -43,7 +43,7 @@ class Timer():
                     self.timerGui_obj_copy.update_timerring_label("timer", self.initial_timer)
                     self.timerGui_obj_copy.update_timerring_range(self.initial_timer)
                     
-                    while self.current_timer >= 0 and not self._stop_event.is_set():
+                    while self.current_timer > 0 and not self._stop_event.is_set():
                         self.current_timer -= 1
                         self.timer_sleep()
                         self.timerGui_obj_copy.update_timerring_label("timer", self.current_timer)

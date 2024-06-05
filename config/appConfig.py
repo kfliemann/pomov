@@ -20,8 +20,20 @@ class AppConfig:
     absolutePath = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     settingsPath = "./pomov/config/settings.ini"
     gifPath = "./pomov/media/img/movement_gif/"
-    audioPath = "./pomov/media/audio/"
+    audioPath = os.path.join(os.environ.get('WINDIR'), 'Media\\')
 
+    audio_files_matching = {
+        "Alarm01.wav": "ms-winsoundevent:Notification.Looping.Alarm",
+        "Alarm02.wav": "ms-winsoundevent:Notification.Looping.Alarm2",
+        "Alarm03.wav": "ms-winsoundevent:Notification.Looping.Alarm3",
+        "Alarm04.wav": "ms-winsoundevent:Notification.Looping.Alarm4",
+        "Alarm05.wav": "ms-winsoundevent:Notification.Looping.Alarm5",
+        "Alarm06.wav": "ms-winsoundevent:Notification.Looping.Alarm6",
+        "Alarm07.wav": "ms-winsoundevent:Notification.Looping.Alarm7",
+        "Alarm08.wav": "ms-winsoundevent:Notification.Looping.Alarm8",
+        "Alarm09.wav": "ms-winsoundevent:Notification.Looping.Alarm9",
+        "Alarm10.wav": "ms-winsoundevent:Notification.Looping.Alarm10",
+    }
 
     def __init__(self) -> None:
         self.checkSettingsIntegrity()
@@ -125,8 +137,11 @@ class AppConfig:
         return os.path.join(self.absolutePath, "media", "img", "movement_gif", gif_list[random.randint(0,len(gif_list)-1)])
 
     def get_alarm_paths(self):
-        audio_list = [f for f in listdir(self.audioPath) if isfile(join(self.audioPath, f))]
+        audio_list = [f for f in listdir(self.audioPath) if os.path.isfile(os.path.join(self.audioPath, f)) and f.startswith("Alarm")]
         return audio_list
+    
+    def get_selected_alarm(self):
+        return self.audio_files_matching[self.readSettings["alarmfile"]]
 
     def str_to_bool(self, s):
         if s == "True":

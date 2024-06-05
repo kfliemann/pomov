@@ -1,5 +1,5 @@
 import random
-from win11toast import notify
+from win11toast import toast
 
 
 class Notification:
@@ -21,7 +21,10 @@ class Notification:
         self.appConfig_obj_copy = appConfig_obj
 
     def show_notification(self):
-        notify('Pomov', 
+        toast('Attention!', 
             self.notification_message[random.randint(0,len(self.notification_message)-1)],
-            image=self.appConfig_obj_copy.get_random_gif_path())
+            image=self.appConfig_obj_copy.get_random_gif_path(),
+            audio=self.appConfig_obj_copy.get_selected_alarm(),
+            app_id = "Pomov")
+
         

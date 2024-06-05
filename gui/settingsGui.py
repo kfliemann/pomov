@@ -113,9 +113,10 @@ class SettingsGui():
         audiopickerCombobox = ComboBox()
         audiofiles_list = self.appConfig_obj_copy.get_alarm_paths()
         preselected_file = self.appConfig_obj_copy.readSettings["alarmfile"]
-        audiopickerCombobox.addItems(self.appConfig_obj_copy.get_alarm_paths())
+        for x in self.appConfig_obj_copy.get_alarm_paths():
+            audiopickerCombobox.addItem(x.split(".")[0], userData=x)
         audiopickerCombobox.setCurrentIndex(audiofiles_list.index(preselected_file))
-        audiopickerCombobox.currentIndexChanged.connect(lambda: self.changeSettingsValue("alarmfile", audiopickerCombobox.currentText()))
+        audiopickerCombobox.currentIndexChanged.connect(lambda: self.changeSettingsValue("alarmfile", audiopickerCombobox.itemData(audiopickerCombobox.currentIndex())))
 
         #load new audio
         loadNewAudioButton = PushButton(FluentIcon.FOLDER, 'Add new Sound')
@@ -212,7 +213,7 @@ class SettingsGui():
                 else:              
                     self.audioplayer_obj.audioplayer_stop()
                     self.audioplayer_obj.audioplayer_load_sound()    
-                    self.playToggleButton_toggle()       
+
             case _:
                 self.appConfig_obj_copy.readSettings[settingName] = value   
 
