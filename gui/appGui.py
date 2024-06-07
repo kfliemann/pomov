@@ -3,6 +3,8 @@ from .timerGui import TimerGui
 from .settingsGui import SettingsGui
 from qframelesswindow import FramelessMainWindow
 from PyQt6.QtWidgets import QStackedLayout, QWidget, QPushButton, QHBoxLayout
+from PyQt6.QtGui import QIcon
+import ctypes
 
 
 class AppGui(FramelessMainWindow):
@@ -14,6 +16,13 @@ class AppGui(FramelessMainWindow):
 
     def __init__(self, appConfig_obj, parent=None):
         super().__init__(parent=parent)
+
+        self.appConfig_obj_copy = appConfig_obj
+
+        #set window icon and name
+        self.setWindowTitle("Pomov")
+        self.setWindowIcon(QIcon(self.appConfig_obj_copy.appIconPath))
+        ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID('kfliemann.pomov.1')
         
         #titlebar
         self.titlebarGui_obj = TitlebarGui()
@@ -25,8 +34,8 @@ class AppGui(FramelessMainWindow):
         self.main_layout = QStackedLayout(main_widget)
 
         #child widgets
-        self.timerGui_obj = TimerGui(appConfig_obj)
-        self.settingsGui_obj = SettingsGui(self, appConfig_obj, self.titlebarGui_obj)
+        self.timerGui_obj = TimerGui(self.appConfig_obj_copy)
+        self.settingsGui_obj = SettingsGui(self, self.appConfig_obj_copy, self.titlebarGui_obj)
 
         self.main_layout.addWidget(self.timerGui_obj.timerWidget)
         self.main_layout.addWidget(self.settingsGui_obj.settingsWidget)

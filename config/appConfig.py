@@ -19,6 +19,7 @@ class AppConfig:
     readSettings = {}
     absolutePath = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     settingsPath = "./pomov/config/settings.ini"
+    appIconPath = "./pomov/media/img/icon/pomov_icon.png"
     gifPath = "./pomov/media/img/movement_gif/"
     audioPath = os.path.join(os.environ.get('WINDIR'), 'Media\\')
 
