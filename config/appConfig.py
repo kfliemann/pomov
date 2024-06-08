@@ -18,10 +18,10 @@ class AppConfig:
     ]
     readSettings = {}
     absolutePath = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    audioPath = os.path.join(os.environ.get('WINDIR'), 'Media\\')
     settingsPath = "./pomov/config/settings.ini"
     appIconPath = "./pomov/media/img/icon/pomov_icon.png"
     gifPath = "./pomov/media/img/movement_gif/"
-    audioPath = os.path.join(os.environ.get('WINDIR'), 'Media\\')
 
     audio_files_matching = {
         "Alarm01.wav": "ms-winsoundevent:Notification.Looping.Alarm",
@@ -35,6 +35,7 @@ class AppConfig:
         "Alarm09.wav": "ms-winsoundevent:Notification.Looping.Alarm9",
         "Alarm10.wav": "ms-winsoundevent:Notification.Looping.Alarm10",
     }
+
 
     def __init__(self) -> None:
         self.checkSettingsIntegrity()
@@ -143,6 +144,10 @@ class AppConfig:
     
     def get_selected_alarm(self):
         return self.audio_files_matching[self.readSettings["alarmfile"]]
+
+    def time_to_string(self, time):
+        minutes, seconds = divmod(time,60)
+        return f"{minutes:02}:{seconds:02}"
 
     def str_to_bool(self, s):
         if s == "True":

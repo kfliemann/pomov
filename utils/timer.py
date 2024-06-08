@@ -7,6 +7,7 @@ class Timer():
 
     appConfig_obj_copy = None
     timerGui_obj_copy = None
+    systemtrayGui_obj_copy = None
     notification_obj = None
 
     initial_timer = None
@@ -14,9 +15,10 @@ class Timer():
     current_timer = None
     current_pausetimer = None
 
-    def __init__(self, timerGui, appConfig_obj):
+    def __init__(self, timerGui, appConfig_obj, systemtrayGui_obj):
         self.appConfig_obj_copy = appConfig_obj
         self.timerGui_obj_copy = timerGui
+        self.systemtrayGui_obj_copy = systemtrayGui_obj
         self.notification_obj = Notification(self.appConfig_obj_copy)
 
         self.timer_reset()
@@ -42,11 +44,13 @@ class Timer():
                 case "timer":
                     self.timerGui_obj_copy.update_timerring_label("timer", self.initial_timer)
                     self.timerGui_obj_copy.update_timerring_range(self.initial_timer)
+                    self.systemtrayGui_obj_copy.update_timer_label("timer", self.initial_timer)
                     
                     while self.current_timer > 0 and not self._stop_event.is_set():
                         self.current_timer -= 1
                         self.timer_sleep()
                         self.timerGui_obj_copy.update_timerring_label("timer", self.current_timer)
+                        self.systemtrayGui_obj_copy.update_timer_label("timer", self.current_timer)
 
                     #time over
                     if not self._stop_event.is_set():
@@ -58,14 +62,17 @@ class Timer():
                 case "pause":    
                     self.timerGui_obj_copy.update_timerring_label("pause", self.initial_pausetimer)
                     self.timerGui_obj_copy.update_timerring_range(self.initial_pausetimer)
+                    self.systemtrayGui_obj_copy.update_timer_label("pause", self.initial_pausetimer)
                     
                     while self.current_pausetimer >= 0 and not self._stop_event.is_set():
+                        self.systemtrayGui_obj_copy.update_timer_label("pause", self.current_pausetimer)
                         self.current_pausetimer -= 1
                         self.timer_sleep()
                         self.timerGui_obj_copy.update_timerring_label("pause", self.current_pausetimer)
                     
                     #time over
                     self.current_pausetimer = self.initial_pausetimer
+                    self.systemtrayGui_obj_copy.update_timer_label("timer", self.initial_timer)
                     if self.appConfig_obj_copy.readSettings["autorestart"]:
                         timer_type= "timer"
                     else:
