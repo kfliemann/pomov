@@ -18,6 +18,7 @@ class AppConfig:
     ]
     readSettings = {}
     absolutePath = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    autostartPath = os.path.join(os.getenv('APPDATA'), 'Microsoft' , 'Windows', 'Start Menu', 'Programs', 'Startup') 
     audioPath = os.path.join(os.environ.get('WINDIR'), 'Media\\')
     settingsPath = "./pomov/config/settings.ini"
     appIconPath = "./pomov/media/img/icon/pomov_icon.png"
@@ -90,10 +91,10 @@ class AppConfig:
             'startonboot': True,
             '\n#defines if the program should close to taskbar if pressed on x or be closed\n'
             'totaskbar': True,
-            '\n#defines which audio file gets played on notification, default path is /pomov/media/audio/\n'
-            'alarmfile': 'alarm1.wav',
+            '\n#defines which audio file gets played on notification\n'
+            'alarmfile': 'Alarm01.wav',
             '\n#defines the volume of the sound\n'
-            'volume': 50,
+            'volume': 100,
         }
 
         with open(self.settingsPath, 'w') as configfile:
@@ -121,7 +122,7 @@ class AppConfig:
             'startonboot': self.readSettings["startonboot"],
             '\n#defines if the program should close to taskbar if pressed on x or be closed\n'
             'totaskbar': self.readSettings["totaskbar"],
-            '\n#defines which audio file gets played on notification, default path is /pomov/media/audio/\n'
+            '\n#defines which audio file gets played on notification\n'
             'alarmfile': self.readSettings["alarmfile"],
             '\n#defines the volume of the sound\n'
             'volume': self.readSettings["volume"],

@@ -31,7 +31,6 @@ class SettingsGui():
         self.settingsWidget_layout.addWidget(self.init_startonboot())
         self.settingsWidget_layout.addWidget(self.init_totaskbar())
         self.settingsWidget_layout.addWidget(self.init_audiopicker())
-        self.settingsWidget_layout.addWidget(self.init_volume())
         self.settingsWidget_layout.addWidget(self.init_saveSettings())
     
     def init_timer(self):
@@ -78,28 +77,28 @@ class SettingsGui():
     
     def init_autorestart(self):
         #checkbox
-        autostartCheckbox = CheckBox("autorestart")
+        autostartCheckbox = CheckBox("Restart Timer after Pause")
         autostartCheckbox.setChecked(self.appConfig_obj_copy.readSettings["autorestart"])
         autostartCheckbox.stateChanged.connect(lambda: self.changeSettingsValue("autorestart", autostartCheckbox.isChecked()))
         return autostartCheckbox
     
     def init_openonboot(self):
         #checkbox
-        openonbootCheckbox = CheckBox("openonboot")
+        openonbootCheckbox = CheckBox("Open app on PC Boot")
         openonbootCheckbox.setChecked(self.appConfig_obj_copy.readSettings["openonboot"])
         openonbootCheckbox.stateChanged.connect(lambda: self.changeSettingsValue("openonboot", openonbootCheckbox.isChecked()))
         return openonbootCheckbox 
     
     def init_startonboot(self):
         #checkbox
-        startonbootCheckbox = CheckBox("startonboot")
+        startonbootCheckbox = CheckBox("Start Timer on App opening")
         startonbootCheckbox.setChecked(self.appConfig_obj_copy.readSettings["startonboot"])
         startonbootCheckbox.stateChanged.connect(lambda: self.changeSettingsValue("startonboot", startonbootCheckbox.isChecked()))
         return startonbootCheckbox
     
     def init_totaskbar(self):
         #checkbox
-        totaskbarCheckbox = CheckBox("totaskbar")
+        totaskbarCheckbox = CheckBox("Minimize to System Tray")
         totaskbarCheckbox.setChecked(self.appConfig_obj_copy.readSettings["totaskbar"])
         totaskbarCheckbox.stateChanged.connect(lambda: self.changeSettingsValue("totaskbar", totaskbarCheckbox.isChecked()))
         return totaskbarCheckbox
@@ -118,21 +117,7 @@ class SettingsGui():
         audiopickerCombobox.setCurrentIndex(audiofiles_list.index(preselected_file))
         audiopickerCombobox.currentIndexChanged.connect(lambda: self.changeSettingsValue("alarmfile", audiopickerCombobox.itemData(audiopickerCombobox.currentIndex())))
 
-        #load new audio
-        loadNewAudioButton = PushButton(FluentIcon.FOLDER, 'Add new Sound')
-        loadNewAudioButton.clicked.connect(self.loadNewAudio)
-
-        audiopickerRowWidget_layout.addWidget(audiopickerCombobox)
-        audiopickerRowWidget_layout.addWidget(loadNewAudioButton)
-
-        return audiopickerRowWidget
-
-    def init_volume(self):
-        #widget
-        volumeRowWidget = QWidget()
-        volumeRowWidget_layout = QHBoxLayout(volumeRowWidget)
-
-        #slider
+        #volume slider for alarm preview
         volumeSlider = Slider(Qt.Orientation.Horizontal)
         volumeSlider.setRange(0, 100)
         volumeSlider.setValue(int(self.appConfig_obj_copy.readSettings["volume"]))
@@ -159,10 +144,11 @@ class SettingsGui():
         setCustomStyleSheet(self.playToggleButton, qss, qss)
         self.playToggleButton.clicked.connect(self.playToggleButton_clicked)
         
-        volumeRowWidget_layout.addWidget(volumeSlider)
-        volumeRowWidget_layout.addWidget(self.timer_label)
-        volumeRowWidget_layout.addWidget(self.playToggleButton)
-        return volumeRowWidget
+        audiopickerRowWidget_layout.addWidget(audiopickerCombobox)
+        audiopickerRowWidget_layout.addWidget(volumeSlider)
+        audiopickerRowWidget_layout.addWidget(self.timer_label)
+        audiopickerRowWidget_layout.addWidget(self.playToggleButton)
+        return audiopickerRowWidget
     
     def init_saveSettings(self):
         #button

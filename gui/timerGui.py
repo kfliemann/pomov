@@ -56,7 +56,7 @@ class TimerGui():
     
     def init_restart(self):
         #button
-        restartButton = PushButton(IconOverwrite.RESTART, 'Restart current Timer')
+        restartButton = PushButton(IconOverwrite.RESTART, 'Restart Timer')
         restartButton.clicked.connect(self.restart_timer)
         return restartButton
 
@@ -79,9 +79,9 @@ class TimerGui():
     def update_timerring_label(self, type, newTime):
         match type:
             case "timer":
-                time_text = f"{self.appConfig_obj_copy.time_to_string(newTime)}\nminutes left timer"
+                time_text = f"Timer: \n{self.appConfig_obj_copy.time_to_string(newTime)}"
             case "pause":
-                time_text = f"{self.appConfig_obj_copy.time_to_string(newTime)}\nminutes left pause"
+                time_text = f"Pause: \n{self.appConfig_obj_copy.time_to_string(newTime)}"
         self.timerRing.setVal(newTime)
         self.timerRing.setFormat(time_text)
         
@@ -91,7 +91,7 @@ class TimerGui():
     def reset_ui(self):
         self.timerRing.setRange(0, self.appConfig_obj_copy.readSettings["timer"])
         self.timerRing.setVal(self.appConfig_obj_copy.readSettings["timer"])
-        time_text = f"{self.appConfig_obj_copy.time_to_string(self.appConfig_obj_copy.readSettings["timer"])}\nminutes left timer"
+        time_text = f"Timer: \n{self.appConfig_obj_copy.time_to_string(self.appConfig_obj_copy.readSettings["timer"])}"
         self.timerRing.setFormat(time_text)
         self.startStopButton.setIcon(IconOverwrite.TIMER_ON)
         self.startStopButton.setText("Start Timer")

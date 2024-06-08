@@ -3,6 +3,7 @@ from .titlebarGui import TitlebarGui
 from .timerGui import TimerGui
 from .settingsGui import SettingsGui
 from .systemtrayGui import SystemtrayGui
+from .contactGui import ContactGui
 from qframelesswindow import FramelessMainWindow
 from PyQt6.QtWidgets import QStackedLayout, QWidget
 from PyQt6.QtGui import QIcon
@@ -43,9 +44,11 @@ class AppGui(FramelessMainWindow):
         #child widgets
         self.timerGui_obj = TimerGui(self.appConfig_obj_copy, self.systemtrayGui_obj)
         self.settingsGui_obj = SettingsGui(self, self.appConfig_obj_copy, self.titlebarGui_obj)
+        self.contactGui_obj = ContactGui()
 
         self.main_layout.addWidget(self.timerGui_obj.timerWidget)
         self.main_layout.addWidget(self.settingsGui_obj.settingsWidget)
+        self.main_layout.addWidget(self.contactGui_obj.contactWidget)
 
         #titlebar.raise() needs to be called before show() in order to properly display titlebar
         self.titleBar.raise_()
