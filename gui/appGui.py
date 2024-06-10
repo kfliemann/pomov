@@ -5,6 +5,7 @@ from .settingsGui import SettingsGui
 from .systemtrayGui import SystemtrayGui
 from .contactGui import ContactGui
 from qframelesswindow import FramelessMainWindow
+from qfluentwidgets import *
 from PyQt6.QtWidgets import QStackedLayout, QWidget
 from PyQt6.QtGui import QIcon
 import ctypes
@@ -29,6 +30,7 @@ class AppGui(FramelessMainWindow):
         self.setMinimumSize(self.window_width, self.window_height)
         self.resize(self.window_width, self.window_height)
         self.setWindowIcon(QIcon(self.appConfig_obj_copy.appIconPath))
+        setThemeColor(QColor(73,175,213))
         ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID('KFliemann.Pomov.1')
         
         #titlebar

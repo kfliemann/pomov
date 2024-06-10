@@ -44,12 +44,13 @@ class TimerGui():
         self.timerRing.setTextVisible(True)
         self.timerRing.setFixedSize(self.timerring_width, self.timerring_height)
         self.timerRing.setStrokeWidth(17)
+        self.timerRing.setCustomBarColor(QColor(145,178,135),QColor(145,178,135))
         self.timerRing.setStyleSheet(f"""
             QProgressBar {{
                 font-size: 25px;
             }}
         """)
-        time_text = f"{self.appConfig_obj_copy.time_to_string(transformed_timer)}\nminutes left timer"
+        time_text = f"Timer: \n{self.appConfig_obj_copy.time_to_string(transformed_timer)}"
         self.timerRing.setFormat(time_text)
         return self.timerRing
     
@@ -103,10 +104,10 @@ class TimerGui():
         match type:
             case "timer":
                 time_text = f"Timer: \n{self.appConfig_obj_copy.time_to_string(newTime)}"
-                self.timerRing.setCustomBarColor(QColor(34,177,76),QColor(34,177,76))
+                self.timerRing.setCustomBarColor(QColor(145,178,135),QColor(145,178,135))
             case "pause":
                 time_text = f"Pause: \n{self.appConfig_obj_copy.time_to_string(newTime)}"
-                self.timerRing.setCustomBarColor(QColor(242,68,68),QColor(242,68,68))
+                self.timerRing.setCustomBarColor(QColor(231,162,58),QColor(231,162,58))
         self.timerRing.setVal(newTime)
         self.timerRing.setFormat(time_text)
         
