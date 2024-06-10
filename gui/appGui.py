@@ -15,6 +15,8 @@ class AppGui(FramelessMainWindow):
     timerGui_obj = None
     settingsGui_obj = None     
     systemtray_notice_shown = False
+    window_width = 400
+    window_height = 600
 
 
     def __init__(self, appConfig_obj, parent=None):
@@ -24,6 +26,8 @@ class AppGui(FramelessMainWindow):
 
         #set window icon and name
         self.setWindowTitle("Pomov")
+        self.setMinimumSize(self.window_width, self.window_height)
+        self.resize(self.window_width, self.window_height)
         self.setWindowIcon(QIcon(self.appConfig_obj_copy.appIconPath))
         ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID('KFliemann.Pomov.1')
         
@@ -53,6 +57,11 @@ class AppGui(FramelessMainWindow):
         #titlebar.raise() needs to be called before show() in order to properly display titlebar
         self.titleBar.raise_()
         self.show()
+
+    def resizeEvent(self, e):
+        super().resizeEvent(e)
+        self.titleBar.resize(self.width(), self.titleBar.height())
+        self.timerGui_obj.resize_timerring(self)
 
     def setCurrentStack(self, layer):
         self.main_layout.setCurrentIndex(layer)

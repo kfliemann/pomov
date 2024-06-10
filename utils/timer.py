@@ -42,14 +42,14 @@ class Timer():
         while not self._stop_event.is_set():
             match timer_type:
                 case "timer":
-                    self.timerGui_obj_copy.update_timerring_label("timer", self.initial_timer)
+                    self.timerGui_obj_copy.update_timerring("timer", self.initial_timer)
                     self.timerGui_obj_copy.update_timerring_range(self.initial_timer)
                     self.systemtrayGui_obj_copy.update_timer_label("timer", self.initial_timer)
                     
                     while self.current_timer > 0 and not self._stop_event.is_set():
                         self.current_timer -= 1
                         self.timer_sleep()
-                        self.timerGui_obj_copy.update_timerring_label("timer", self.current_timer)
+                        self.timerGui_obj_copy.update_timerring("timer", self.current_timer)
                         self.systemtrayGui_obj_copy.update_timer_label("timer", self.current_timer)
 
                     #time over
@@ -60,7 +60,7 @@ class Timer():
                 
                     
                 case "pause":    
-                    self.timerGui_obj_copy.update_timerring_label("pause", self.initial_pausetimer)
+                    self.timerGui_obj_copy.update_timerring("pause", self.initial_pausetimer)
                     self.timerGui_obj_copy.update_timerring_range(self.initial_pausetimer)
                     self.systemtrayGui_obj_copy.update_timer_label("pause", self.initial_pausetimer)
                     
@@ -68,7 +68,7 @@ class Timer():
                         self.systemtrayGui_obj_copy.update_timer_label("pause", self.current_pausetimer)
                         self.current_pausetimer -= 1
                         self.timer_sleep()
-                        self.timerGui_obj_copy.update_timerring_label("pause", self.current_pausetimer)
+                        self.timerGui_obj_copy.update_timerring("pause", self.current_pausetimer)
                     
                     #time over
                     self.current_pausetimer = self.initial_pausetimer

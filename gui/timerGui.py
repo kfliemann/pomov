@@ -1,6 +1,7 @@
 from utils.iconOverwrite import IconOverwrite
 from utils.timer import Timer
 from PyQt6.QtWidgets import QVBoxLayout, QWidget
+from PyQt6.QtCore import Qt
 from qfluentwidgets import *
 
 
@@ -11,6 +12,8 @@ class TimerGui():
     timer_obj = None
     timer_running = None
     timerWidget = None
+    timerring_height = 400
+    timerring_width = 300
 
 
     def __init__(self, appConfig_obj, systemtrayGui_obj):
@@ -19,8 +22,10 @@ class TimerGui():
 
         self.timerWidget = QWidget()
         self.timerWidget_layout = QVBoxLayout(self.timerWidget)
+        self.timerWidget_layout.setSpacing(30)
+        self.timerWidget_layout.setContentsMargins(15,0,15,50)
 
-        self.timerWidget_layout.addWidget(self.init_timerRing())
+        self.timerWidget_layout.insertWidget(0, self.init_timerRing(), 0, Qt.AlignmentFlag.AlignCenter)
         self.timerWidget_layout.addWidget(self.init_startstop())
         self.timerWidget_layout.addWidget(self.init_restart())
 
@@ -37,8 +42,13 @@ class TimerGui():
         self.timerRing.setRange(0, transformed_timer)
         self.timerRing.setValue(transformed_timer)
         self.timerRing.setTextVisible(True)
-        self.timerRing.setFixedSize(120, 120)
-        self.timerRing.setStrokeWidth(5)
+        self.timerRing.setFixedSize(self.timerring_width, self.timerring_height)
+        self.timerRing.setStrokeWidth(17)
+        self.timerRing.setStyleSheet(f"""
+            QProgressBar {{
+                font-size: 25px;
+            }}
+        """)
         time_text = f"{self.appConfig_obj_copy.time_to_string(transformed_timer)}\nminutes left timer"
         self.timerRing.setFormat(time_text)
         return self.timerRing
@@ -76,12 +86,27 @@ class TimerGui():
         self.timer_obj.timer_stop()
         self.reset_ui()
 
-    def update_timerring_label(self, type, newTime):
+    def resize_timerring(self, appGui_obj):
+        aspect = self.timerring_width / self.timerring_height
+        possible_h = appGui_obj.width() / aspect
+        possible_w = appGui_obj.height() * aspect
+
+        if possible_h <= appGui_obj.height():
+            new_height = possible_h-200
+            new_width = appGui_obj.width()-100
+        else:
+            new_height = appGui_obj.height()-200
+            new_width = possible_w-100
+        self.timerRing.setFixedSize(int(round(new_width)),int(round(new_height)))
+
+    def update_timerring(self, type, newTime):
         match type:
             case "timer":
                 time_text = f"Timer: \n{self.appConfig_obj_copy.time_to_string(newTime)}"
+                self.timerRing.setCustomBarColor(QColor(34,177,76),QColor(34,177,76))
             case "pause":
                 time_text = f"Pause: \n{self.appConfig_obj_copy.time_to_string(newTime)}"
+                self.timerRing.setCustomBarColor(QColor(242,68,68),QColor(242,68,68))
         self.timerRing.setVal(newTime)
         self.timerRing.setFormat(time_text)
         
