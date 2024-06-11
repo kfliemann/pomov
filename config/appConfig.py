@@ -21,7 +21,7 @@ class AppConfig:
     autostartPath = os.path.join(os.getenv('APPDATA'), 'Microsoft' , 'Windows', 'Start Menu', 'Programs', 'Startup') 
     audioPath = os.path.join(os.environ.get('WINDIR'), 'Media\\')
     settingsPath = "./pomov/config/settings.ini"
-    appIconPath = "./pomov/media/img/icon/pomov_icon.png"
+    appIconPath = "./pomov/media/img/logo/pomov_icon.ico"
     gifPath = "./pomov/media/img/movement_gif/"
 
     audio_files_matching = {
