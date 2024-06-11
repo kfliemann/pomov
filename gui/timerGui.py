@@ -52,6 +52,7 @@ class TimerGui():
         self.timerRing.setStyleSheet(f"""
             QProgressBar {{
                 font-size: 25px;
+                font-weight: 630;
             }}
         """)
         time_text = f"Timer: \n{self.appConfig_obj_copy.time_to_string(transformed_timer)}"

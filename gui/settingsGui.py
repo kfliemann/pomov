@@ -1,7 +1,7 @@
 from utils.validator import ValidateTimer, ValidatePauseTimer
 from utils.audioplayer import Audioplayer
 from PyQt6.QtCore import Qt, QSize
-from PyQt6.QtWidgets import QVBoxLayout, QHBoxLayout, QWidget
+from PyQt6.QtWidgets import QVBoxLayout, QHBoxLayout, QWidget, QSizePolicy
 from qfluentwidgets import *
 
 
@@ -13,6 +13,8 @@ class SettingsGui():
     audioplayer_obj = None
     settingsWidget = None
 
+    qss = 'PushButton, BodyLabel, CheckBox, LineEdit, ComboBox{font-size: 17px;}'
+    iconsize = QSize(18,18)
 
     def __init__(self, appGui_obj, appConfig_obj, titlebarGui_obj):
         self.appGui_obj_copy = appGui_obj
@@ -20,28 +22,62 @@ class SettingsGui():
         self.titlebarGui_obj_copy = titlebarGui_obj 
         self.audioplayer_obj = Audioplayer(self.appConfig_obj_copy)
 
+        #main settings widget which contains every child        
         self.settingsWidget = QWidget()
         self.settingsWidget_layout = QVBoxLayout(self.settingsWidget)
 
-        #button styling
-        self.qss = 'PushButton, BodyLabel, CheckBox, LineEdit, ComboBox{font-size: 17px;}'
-        self.iconsize = QSize(18,18)
+        #every timer setting
+        self.timer_related = QWidget()
+        self.timer_related_layout = QVBoxLayout(self.timer_related)
+        self.timer_related.setSizePolicy(QSizePolicy.Policy.Ignored, QSizePolicy.Policy.Fixed)
+        '''
+        do not reproduce this, this should not be solved with html & css
+        please find a better way if you can!!
+        since assigning a custom style with "TitleLabel{text-decoration-color: rgb(1,2,3);}" 
+        and setCustomStyleSheet() doesnt work directly this workaround will do the trick
+        '''
+        self.timer_related_layout.addWidget(TitleLabel("<u style='text-decoration-color: rgb(73,175,213);'>Timer Settings</u>"))
+        self.timer_related_layout.insertSpacing(1, 10)
+        self.timer_related_layout.addWidget(self.init_timer())
+        self.timer_related_layout.addWidget(self.init_pauseTimer())
+        self.timer_related_layout.addWidget(self.init_startonboot())
+        self.timer_related_layout.addWidget(self.init_autorestart())
+        
+        #app related settings
+        self.app_related = QWidget()
+        self.app_related_layout = QVBoxLayout(self.app_related)
+        self.app_related.setSizePolicy(QSizePolicy.Policy.Ignored, QSizePolicy.Policy.Fixed)
 
-        #setting elements
-        self.settingsWidget_layout.addWidget(self.init_timer())
-        self.settingsWidget_layout.addWidget(self.init_pauseTimer())
-        self.settingsWidget_layout.addWidget(self.init_startonboot())
-        self.settingsWidget_layout.addWidget(self.init_autorestart())
-        self.settingsWidget_layout.addWidget(self.init_openonboot())
-        self.settingsWidget_layout.addWidget(self.init_totaskbar())
-        self.settingsWidget_layout.addWidget(self.init_audiopicker())
-        self.settingsWidget_layout.addWidget(self.init_saveSettings())
-    
+        self.app_related_layout.addWidget(TitleLabel("<u style='text-decoration-color: rgb(73,175,213);'>App Settings</u>"))
+        self.app_related_layout.insertSpacing(1, 10)
+        self.app_related_layout.addWidget(self.init_openonboot())
+        self.app_related_layout.addWidget(self.init_totaskbar())
+        self.app_related_layout.insertSpacing(4,10)
+        '''
+        the following is even worse: assigning <u>nderline to the text in order to access css options and then instantly removing text-decoration 
+        final product is a one liner with a bigger font instead of a method containing qss customStyleSheet
+        do not do that, please
+        ''' 
+        self.app_related_layout.addWidget(StrongBodyLabel("<u style='text-decoration:none; font-size: 18px;'>Alarm preview</u>"))
+        self.app_related_layout.addWidget(self.init_audiopicker())
+        
+        #save button - create a widget for every topic
+        self.save_button = QWidget()
+        self.save_button_layout = QVBoxLayout(self.save_button)
+        self.save_button.setSizePolicy(QSizePolicy.Policy.Ignored, QSizePolicy.Policy.Fixed)
+        self.save_button_layout.addWidget(self.init_saveSettings())
+
+        self.settingsWidget_layout.addWidget(self.timer_related)
+        self.settingsWidget_layout.addWidget(self.app_related)
+        self.settingsWidget_layout.addWidget(self.save_button)
+
     def init_timer(self):
         #widget
         timerRowWidget = QWidget()
+        timerRowWidget.setSizePolicy(QSizePolicy.Policy.Ignored, QSizePolicy.Policy.Fixed)
         timerRowWidget_layout = QHBoxLayout(timerRowWidget)
-        
+        timerRowWidget_layout.setContentsMargins(0,0,0,0)
+
         #label
         timer_label = BodyLabel("Timer:")
         setCustomStyleSheet(timer_label, self.qss, self.qss)
@@ -49,7 +85,7 @@ class SettingsGui():
         #lineedit
         self.timer_lineEdit = LineEdit()
         setCustomStyleSheet(self.timer_lineEdit, self.qss, self.qss)
-        self.timer_lineEdit.setPlaceholderText("Minutes")
+        self.timer_lineEdit.setPlaceholderText("Time in Minutes, max 120")
         self.timer_lineEdit.setText(str(self.appConfig_obj_copy.readSettings["timer"]))
         self.timer_lineEdit.textEdited.connect(lambda: self.changeSettingsValue("timer", self.timer_lineEdit.text()))
 
@@ -63,7 +99,9 @@ class SettingsGui():
     def init_pauseTimer(self):
         #widget
         pauseTimerRowWidget = QWidget()
+        pauseTimerRowWidget.setSizePolicy(QSizePolicy.Policy.Ignored, QSizePolicy.Policy.Fixed)
         pauseTimerRowWidget_layout = QHBoxLayout(pauseTimerRowWidget)
+        pauseTimerRowWidget_layout.setContentsMargins(0,0,0,0)
         
         #label
         pauseTimer_label = BodyLabel("Pause:")
@@ -72,7 +110,7 @@ class SettingsGui():
         #lineedit
         self.pauseTimer_lineEdit = LineEdit()
         setCustomStyleSheet(self.pauseTimer_lineEdit, self.qss, self.qss)
-        self.pauseTimer_lineEdit.setPlaceholderText("Minutes")
+        self.pauseTimer_lineEdit.setPlaceholderText("Time in Minutes, max 20")
         self.pauseTimer_lineEdit.setText(str(self.appConfig_obj_copy.readSettings["pausetimer"]))
         self.pauseTimer_lineEdit.textEdited.connect(lambda: self.changeSettingsValue("pausetimer", self.pauseTimer_lineEdit.text()))
 
@@ -93,7 +131,7 @@ class SettingsGui():
     
     def init_openonboot(self):
         #checkbox
-        openonbootCheckbox = CheckBox("Open pp on PC Boot")
+        openonbootCheckbox = CheckBox("Open App on PC Boot")
         setCustomStyleSheet(openonbootCheckbox, self.qss, self.qss)
         openonbootCheckbox.setChecked(self.appConfig_obj_copy.readSettings["openonboot"])
         openonbootCheckbox.stateChanged.connect(lambda: self.changeSettingsValue("openonboot", openonbootCheckbox.isChecked()))
@@ -118,7 +156,9 @@ class SettingsGui():
     def init_audiopicker(self):
         #audio picker widget
         audiopickerRowWidget = QWidget()
+        audiopickerRowWidget.setSizePolicy(QSizePolicy.Policy.Ignored, QSizePolicy.Policy.Fixed)
         audiopickerRowWidget_layout = QHBoxLayout(audiopickerRowWidget)
+        audiopickerRowWidget_layout.setContentsMargins(0,0,0,0)
         
         #audio combobox
         audiopickerCombobox = ComboBox()
