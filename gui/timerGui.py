@@ -1,7 +1,7 @@
 from utils.iconOverwrite import IconOverwrite
 from utils.timer import Timer
 from PyQt6.QtWidgets import QVBoxLayout, QWidget
-from PyQt6.QtCore import Qt
+from PyQt6.QtCore import Qt, QSize
 from qfluentwidgets import *
 
 
@@ -24,6 +24,10 @@ class TimerGui():
         self.timerWidget_layout = QVBoxLayout(self.timerWidget)
         self.timerWidget_layout.setSpacing(30)
         self.timerWidget_layout.setContentsMargins(15,0,15,50)
+        
+        #button styling
+        self.qss = 'PushButton{font-size: 18px;}'
+        self.iconsize = QSize(18,18)
 
         self.timerWidget_layout.insertWidget(0, self.init_timerRing(), 0, Qt.AlignmentFlag.AlignCenter)
         self.timerWidget_layout.addWidget(self.init_startstop())
@@ -61,13 +65,17 @@ class TimerGui():
             self.startStopButton = PushButton(IconOverwrite.TIMER_OFF, 'Stop Timer')
         else:
             self.startStopButton = PushButton(IconOverwrite.TIMER_ON, 'Start Timer')
-        
+        setCustomStyleSheet(self.startStopButton, self.qss, self.qss)
+        self.startStopButton.setIconSize(self.iconsize)
+
         self.startStopButton.clicked.connect(self.toggle_timer)
         return self.startStopButton
     
     def init_restart(self):
         #button
         restartButton = PushButton(IconOverwrite.RESTART, 'Restart Timer')
+        setCustomStyleSheet(restartButton, self.qss, self.qss)
+        restartButton.setIconSize(self.iconsize)
         restartButton.clicked.connect(self.restart_timer)
         return restartButton
 
@@ -117,6 +125,7 @@ class TimerGui():
     def reset_ui(self):
         self.timerRing.setRange(0, self.appConfig_obj_copy.readSettings["timer"])
         self.timerRing.setVal(self.appConfig_obj_copy.readSettings["timer"])
+        self.timerRing.setCustomBarColor(QColor(145,178,135),QColor(145,178,135))
         time_text = f"Timer: \n{self.appConfig_obj_copy.time_to_string(self.appConfig_obj_copy.readSettings["timer"])}"
         self.timerRing.setFormat(time_text)
         self.startStopButton.setIcon(IconOverwrite.TIMER_ON)
