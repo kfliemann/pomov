@@ -50,7 +50,7 @@ class AppGui(FramelessMainWindow):
         #child widgets
         self.timerGui_obj = TimerGui(self.appConfig_obj_copy, self.systemtrayGui_obj)
         self.settingsGui_obj = SettingsGui(self, self.appConfig_obj_copy, self.titlebarGui_obj)
-        self.contactGui_obj = ContactGui()
+        self.contactGui_obj = ContactGui(self)
 
         self.main_layout.addWidget(self.timerGui_obj.timerWidget)
         self.main_layout.addWidget(self.settingsGui_obj.settingsWidget)
@@ -64,6 +64,7 @@ class AppGui(FramelessMainWindow):
         super().resizeEvent(e)
         self.titleBar.resize(self.width(), self.titleBar.height())
         self.timerGui_obj.resize_timerring(self)
+        self.contactGui_obj.resize_logo(self)
 
     def setCurrentStack(self, layer):
         self.main_layout.setCurrentIndex(layer)
