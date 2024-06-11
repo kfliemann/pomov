@@ -16,7 +16,7 @@ class ValidateTimer(QValidator):
 
 class ValidatePauseTimer(QValidator):
     def validate(self, str , index):
-        pattern = re.compile("^(?:[1-5]?[0-9]|60)$")
+        pattern = re.compile("^(?:[1]?[0-9]|20)$")
         
         if str == "":
             return QValidator.State.Acceptable, str, index
