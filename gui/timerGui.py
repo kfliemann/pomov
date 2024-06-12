@@ -115,7 +115,7 @@ class TimerGui():
                 time_text = f"Timer: \n{self.appConfig_obj_copy.time_to_string(newTime)}"
                 self.timerRing.setCustomBarColor(QColor(145,178,135),QColor(145,178,135))
             case "pause":
-                time_text = f"Pause: \n{self.appConfig_obj_copy.time_to_string(newTime)}"
+                time_text = f"Break: \n{self.appConfig_obj_copy.time_to_string(newTime)}"
                 self.timerRing.setCustomBarColor(QColor(231,162,58),QColor(231,162,58))
         self.timerRing.setVal(newTime)
         self.timerRing.setFormat(time_text)

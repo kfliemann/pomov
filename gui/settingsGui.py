@@ -104,7 +104,7 @@ class SettingsGui():
         pauseTimerRowWidget_layout.setContentsMargins(0,0,0,0)
         
         #label
-        pauseTimer_label = BodyLabel("Pause:")
+        pauseTimer_label = BodyLabel("Break:")
         setCustomStyleSheet(pauseTimer_label, self.qss, self.qss)
         
         #lineedit
@@ -123,7 +123,7 @@ class SettingsGui():
     
     def init_autorestart(self):
         #checkbox
-        autostartCheckbox = CheckBox("Restart Timer after Pause")
+        autostartCheckbox = CheckBox("Restart Timer after Break")
         setCustomStyleSheet(autostartCheckbox, self.qss, self.qss)
         autostartCheckbox.setChecked(self.appConfig_obj_copy.readSettings["autorestart"])
         autostartCheckbox.stateChanged.connect(lambda: self.changeSettingsValue("autorestart", autostartCheckbox.isChecked()))
