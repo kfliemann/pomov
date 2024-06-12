@@ -1,6 +1,6 @@
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/kfliemann/pomov/assets/39403385/1cbd415d-da02-429a-af9a-0fc274261ba0">
-  <source media="(prefers-color-scheme: light)" srcset="https://github.com/kfliemann/pomov/assets/39403385/bd9f84d4-cbca-4f4a-9ad3-f4d08ecc3aec">
+  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/kfliemann/pomov/assets/39403385/bd9f84d4-cbca-4f4a-9ad3-f4d08ecc3aec">
+  <source media="(prefers-color-scheme: light)" srcset="https://github.com/kfliemann/pomov/assets/39403385/1cbd415d-da02-429a-af9a-0fc274261ba0">
   <img alt="Shows the word Pomov with a tomato for the first o" src="https://github.com/kfliemann/pomov/assets/39403385/1cbd415d-da02-429a-af9a-0fc274261ba0">
 </picture>
 <div align="center">
