@@ -161,7 +161,7 @@ class AppConfig:
         self.readSettings["pausetimer"] = int(self.readSettings["pausetimer"]) 
     
     def get_random_gif_path(self): 
-        gif_list = [f for f in listdir(MOVEMENTGIF_PATH) if isfile(join(MOVEMENTGIF_PATH, f))]
+        gif_list = [f for f in listdir(MOVEMENTGIF_PATH) if isfile(join(MOVEMENTGIF_PATH, f)) and f.lower().endswith('.gif')]
         return os.path.join(MOVEMENTGIF_PATH, gif_list[random.randint(0,len(gif_list)-1)])
 
     def get_alarm_paths(self):
