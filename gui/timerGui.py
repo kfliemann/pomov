@@ -40,8 +40,7 @@ class TimerGui():
 
     def init_timerRing(self):
         #progressring
-        #TODO: add * 60 to transformed_timer when done testing.
-        transformed_timer = self.appConfig_obj_copy.readSettings["timer"]
+        transformed_timer = self.appConfig_obj_copy.readSettings["timer"] * 60
         self.timerRing = ProgressRing()
         self.timerRing.setRange(0, transformed_timer)
         self.timerRing.setValue(transformed_timer)

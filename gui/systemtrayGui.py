@@ -1,6 +1,7 @@
 from PyQt6.QtWidgets import QStackedLayout, QWidget, QPushButton, QHBoxLayout, QSystemTrayIcon, QMenu, QLabel, QWidgetAction
 from PyQt6.QtGui import QIcon, QAction
 from PyQt6.QtCore import QSize, Qt, QEvent
+from utils.filepaths import *
 
 class SystemtrayGui():
 
@@ -12,7 +13,7 @@ class SystemtrayGui():
 
         #system tray icon
         self.tray_icon = QSystemTrayIcon(self.appGui_obj_copy)
-        self.tray_icon.setIcon(QIcon(self.appGui_obj_copy.appConfig_obj_copy.appIconPath))
+        self.tray_icon.setIcon(QIcon(APPICON_PATH))
         
         #menu is assigned to the tray icon
         self.tray_menu = QMenu()

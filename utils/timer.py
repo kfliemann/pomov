@@ -100,9 +100,8 @@ class Timer():
         self.timer_reset()
 
     def timer_reset(self):
-        #TODO: add * 60 to each line when done testing.
-        self.initial_timer = self.current_timer = self.appConfig_obj_copy.readSettings["timer"] 
-        self.initial_pausetimer = self.current_pausetimer = self.appConfig_obj_copy.readSettings["pausetimer"] 
+        self.initial_timer = self.current_timer = self.appConfig_obj_copy.readSettings["timer"] * 60
+        self.initial_pausetimer = self.current_pausetimer = self.appConfig_obj_copy.readSettings["pausetimer"] * 60 
 
     def timer_exit(self):
         if self._timer_thread:

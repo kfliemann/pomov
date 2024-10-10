@@ -1,6 +1,6 @@
 from enum import Enum
 from qfluentwidgets import getIconColor, Theme, FluentIconBase
-
+from .filepaths import *
 
 class IconOverwrite(FluentIconBase, Enum):
     """ Custom icons """
@@ -11,4 +11,4 @@ class IconOverwrite(FluentIconBase, Enum):
 
     def path(self, theme=Theme.AUTO):
         # getIconColor() return "white" or "black" according to current theme
-        return f'./pomov/media/img/icon/{self.value}_{getIconColor(theme)}.svg'
+        return f'{ICONOVERWRITE_PATH}/{self.value}_{getIconColor(theme)}.svg'

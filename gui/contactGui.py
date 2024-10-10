@@ -27,7 +27,7 @@ class ContactGui():
         logo_widget_layout = QVBoxLayout(self.logo_widget)
         logo_widget_layout.setContentsMargins(0,0,0,0)
         
-        self.image = ImageLabel("./pomov/media/img/logo/pomov_logo.png")
+        self.image = ImageLabel("./media/img/logo/pomov_logo.png")
         self.image.scaledToWidth(self.appGui_obj_copy.width()-20)
 
         logo_widget_layout.insertSpacing(0, self.appGui_obj_copy.titleBar.height())

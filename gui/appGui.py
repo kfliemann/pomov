@@ -4,6 +4,7 @@ from .timerGui import TimerGui
 from .settingsGui import SettingsGui
 from .systemtrayGui import SystemtrayGui
 from .contactGui import ContactGui
+from utils.filepaths import *
 from qframelesswindow import FramelessMainWindow
 from qfluentwidgets import *
 from PyQt6.QtWidgets import QStackedLayout, QWidget
@@ -29,7 +30,7 @@ class AppGui(FramelessMainWindow):
         self.setWindowTitle("Pomov")
         self.setMinimumSize(self.window_width, self.window_height)
         self.resize(self.window_width, self.window_height)
-        self.setWindowIcon(QIcon(self.appConfig_obj_copy.appIconPath))
+        self.setWindowIcon(QIcon(APPICON_PATH))
         setThemeColor(QColor(73,175,213))
         ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID('KFliemann.Pomov.1')
         
@@ -76,6 +77,7 @@ class AppGui(FramelessMainWindow):
         sys.exit()
 
     def minimizeWindow(self):
+        #i messed up: totaskbar boolean is inverted, refactoring isn't worth my time so it stays like this
         if self.appConfig_obj_copy.readSettings["totaskbar"]:
             if self.timerGui_obj.timer_running:
                 tray_message = "Pomov is running in the background"
@@ -84,8 +86,6 @@ class AppGui(FramelessMainWindow):
             if self.systemtray_notice_shown == False:
                 self.systemtrayGui_obj.show_minimized_message(tray_message)
                 self.systemtray_notice_shown = True
-            #TODO: fix minimize button still being hovered after minimizing window
-            #only happens when hiding the window, not minimizing
             self.hide()
             self.setVisible(False)
         else:
