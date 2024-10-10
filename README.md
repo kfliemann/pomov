@@ -26,7 +26,8 @@ When the timer runs out, <b>Pomov</b> sends a Windows Notification featuring a G
 * Choose to minimize to Taskbar or to System Tray, if you want the App to run in the background
 
 ## 💻 Interface  
-![pomov_functionality](https://github.com/kfliemann/pomov/assets/39403385/57e76ce3-5460-4b72-8602-ed5cede75263)
+![layout](https://github.com/user-attachments/assets/8ba325e3-3f06-40b0-9cc2-f2d150ace9a0)
+
 
 ## 💬 FAQ
 **Why is the Timer limited to 120 minutes and the Break limited to 20 minutes?**
@@ -38,8 +39,14 @@ When the timer runs out, <b>Pomov</b> sends a Windows Notification featuring a G
 **I changed the volume setting of the alarm sound, but when the Notification sound plays, it is louder / quieter than what I set it to. Why?**
 - The volume slider is for sound preview only. The actual volume of the Windows Notification is tied to your system's current volume setting.
 
+**Can i add new gif animations, i am tired of the current ones.**
+- Yes you can! Just add the .gif files into the \media\img\movement_gif folder and the app will pick an animation at random.
+
 **Which operating systems are supported?**
-- Since i am using the library win11toast i am focusing on Windows. The App is tested using Win10, i hope Win11 is working aswell. Currently no support for Mac / Linux. I don't know what happens, if you run the App on those systems. 
+- Since i am using the library win11toast i am focusing on Windows. The App is tested using Win10, i hope Win11 is working aswell. Currently no support for Mac / Linux. I don't know what happens, if you run the App on those systems.
+
+**Why do i have to create a shortcut myself and why does the app not create one itself?**
+- I found out when trying to release v1.0 that automatically creating shortcuts in the autostart folder is apparently something malware often does and my app got flagged as "Trojan:Script/Wacatac.H!ml" because of that (whoops, lol!). 
 
 **My Question is not listed here, what do i do?**
 - No problem! You can open up a new issue containing your question and i will help you out! 😊
