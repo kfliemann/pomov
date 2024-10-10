@@ -3,6 +3,8 @@ from utils.audioplayer import Audioplayer
 from PyQt6.QtCore import Qt, QSize
 from PyQt6.QtWidgets import QVBoxLayout, QHBoxLayout, QWidget, QSizePolicy
 from qfluentwidgets import *
+import os
+from utils.filepaths import *
 
 
 class SettingsGui():
@@ -135,7 +137,16 @@ class SettingsGui():
         setCustomStyleSheet(openonbootCheckbox, self.qss, self.qss)
         openonbootCheckbox.setChecked(self.appConfig_obj_copy.readSettings["openonboot"])
         openonbootCheckbox.stateChanged.connect(lambda: self.changeSettingsValue("openonboot", openonbootCheckbox.isChecked()))
+        """
+        seek appConfig.py checkIfStartOnBoot() method for explanation
         return openonbootCheckbox 
+        """
+        #button
+        openonbootButton = PushButton(FluentIcon.FOLDER, 'Add a shortcut of Pomov.exe here \nfor autostart functionality')
+        setCustomStyleSheet(openonbootButton, self.qss, self.qss)
+        openonbootButton.setIconSize(self.iconsize)
+        openonbootButton.clicked.connect(self.openAutostartFolder)
+        return openonbootButton 
     
     def init_startonboot(self):
         #checkbox
@@ -274,6 +285,9 @@ class SettingsGui():
         self.appGui_obj_copy.timerGui_obj.reset_ui()
         self.titlebarGui_obj_copy.settings_button_clicked()
 
+    def openAutostartFolder(self):
+        os.startfile(AUTOSTART_PATH)
+        
     def closeSettings(self):
         self.audioplayer_obj.audioplayer_stop()
         self.playToggleButton_toggle()

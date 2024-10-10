@@ -38,7 +38,7 @@ class AppConfig:
 
     def __init__(self) -> None:
         self.checkSettingsIntegrity()
-        self.checkIfStartOnBoot()
+        #self.checkIfStartOnBoot()
         self.transform_timer()
         
     def checkSettingsIntegrity(self):
@@ -102,6 +102,9 @@ class AppConfig:
         self.checkSettingsIntegrity()
         return
 
+    #appearently you cannot create / delete shortcuts into autostart folder without having your programm signed
+    #because thats also what malware does, duh. the app got flagged as "Trojan:Script/Wacatac.H!ml" because of this
+    #deactivating, but keeping the code, because maybe there is a workaround (there probably is none)
     def checkIfStartOnBoot(self):
         shortcutFound = False
         for file in os.listdir(self.autostartPath):
