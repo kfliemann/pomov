@@ -126,7 +126,7 @@ class TimerGui():
         self.timerRing.setRange(0, self.appConfig_obj_copy.readSettings["timer"])
         self.timerRing.setVal(self.appConfig_obj_copy.readSettings["timer"])
         self.timerRing.setCustomBarColor(QColor(145,178,135),QColor(145,178,135))
-        time_text = f"Timer: \n{self.appConfig_obj_copy.time_to_string(self.appConfig_obj_copy.readSettings["timer"])}"
+        time_text = f"Timer: \n{self.appConfig_obj_copy.time_to_string(self.appConfig_obj_copy.readSettings["timer"]*60)}"
         self.timerRing.setFormat(time_text)
         self.startStopButton.setIcon(IconOverwrite.TIMER_ON)
         self.startStopButton.setText("Start Timer")
